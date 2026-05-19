@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Choral Counting</title>
+    <link rel="icon" href="../img/coral_icon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="../img/coral_icon.png" />
+    <style>
+        body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; padding: 24px; }
+        .form-grid { display: grid; grid-template-columns: 200px 1fr; gap: 12px 16px; align-items: center; max-width: 720px; }
+        label { font-weight: 600; }
+        select, input[type="text"] { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/CalebCanham/Choral-Counting-Tool-v2@main/styles.css" />
+        <script type="module" src="../js/index.js" crossorigin="anonymous" defer></script>
+</head>
+<body>
+
+    <div id="setup">
+        <h1>Choral Counting — Setup</h1>
+
+        <form class="form-grid" id="count-settings" autocomplete="off">
+            <label for="frequently-used">Frequently Used Counts</label>
+            <select id="frequently-used" name="frequently-used">
+                <option value="" selected disabled>Choose a preset</option>
+                <!-- <option value="1-8">1–8</option>
+                <option value="1-16">1–16</option>
+                <option value="1-32">1–32</option>
+                <option value="custom">Custom</option> -->
+            </select>
+
+            <label for="title">Title</label>
+            <input id="title" name="title" type="text" placeholder="Enter a title" />
+
+            <label for="type-of-number">Type of Number</label>
+            <select id="type-of-number" name="type-of-number">
+                <option value="" selected disabled>Select type</option>
+                <!-- <option value="cardinal">Cardinal (1, 2, 3...)</option>
+                <option value="ordinal">Ordinal (1st, 2nd, 3rd...)</option>
+                <option value="roman">Roman (I, II, III...)</option> -->
+            </select>
+
+            <label for="starting-number">Starting Number</label>
+            <input id="starting-number" name="starting-number" type="text" placeholder="e.g. 0" />
+
+            <label for="interval">Interval</label>
+            <input id="interval" name="interval" type="text" placeholder="e.g. 4" />
+
+            <label for="rows">Rows</label>
+            <input id="rows" name="rows" type="text" placeholder="e.g. 5" />
+
+            <label for="columns">Columns</label>
+            <input id="columns" name="columns" type="text" placeholder="e.g. 5" />
+
+            <label id="directionLabel" for="toggleSwitchDirection">Direction (Across)</label>
+            <label class="switch">
+                <input type="checkbox" id="toggleSwitchDirection">
+                <span class="slider"></span>
+            </label>
+
+            <label id="modeLabel" for="toggleSwitchMode">Mode (Increment)</label>
+            <label class="switch">
+                <input type="checkbox" id="toggleSwitchMode">
+                <span class="slider"></span>
+            </label>
+
+            <label class="hidden" id="fractionModeLabel" for="fractionMode">Fraction Mode (Improper)</label>
+            <label class="switch hidden" id="toggleFractionWrapper">
+                <input type="checkbox" id="toggleFractionMode">
+                <span class="slider"></span>
+            </label>
+
+            <label class="hidden" id="fractionModeLabel" for="fractionMode">Fraction Mode (Improper)</label>
+            <label class="switch hidden" id="toggleFractionWrapper">
+                <input type="checkbox" id="toggleFractionMode">
+                <span class="slider"></span>
+            </label>
+
+            <label class="hidden" id="decimalModeLabel" for="decimalMode">Decimal Places Consistency</label>
+            <label class="switch hidden" id="toggleDecimalWrapper">
+                <input type="checkbox" id="toggleDecimalMode">
+                <span class="slider"></span>
+            </label>
+
+            <label for="font">Font</label>
+            <select id="font" name="font">
+                <option value="" selected disabled>Select font</option>
+            </select>
+
+            <label for="font-size">Font Size</label>
+            <input id="font-size" name="font-size" type="text" placeholder="e.g. 18" />
+
+            <button id="resetBtn" class="present-button" type="button" aria-label="Reset" style="max-width:100px;">Reset</button>
+
+        </form>
+
+        <hr role="separator" aria-hidden="true" style="margin:24px 0;border:none;border-top:4px solid #1a1a1a;">
+
+        <div style="display:flex; align-items:center; gap:12px;">
+            <h1 style="margin:0;">Preview</h1>
+            <button id="presentBtn" class="present-button" type="button" aria-label="Present" style="min-width:100px;">Present</button>
+        </div>
+        <div id="choralTableSetup"></div>
+
+    </div>
+
+    <div id="present" class="hidden">
+
+        <h1 id="presentHeader">Present</h1>
+        <div id="presentControls" role="group" aria-label="Presentation controls" style="display:flex; gap:12px; align-items:center; margin-bottom:12px;">
+            <button id="restartBtn" class="present-button" type="button" aria-label="Restart">|&lt;&lt; Restart</button>
+            <button id="removeBtn" class="present-button" type="button" aria-label="Remove">&lt; Remove</button>
+            <button id="nextBtn" class="present-button" type="button" aria-label="Next">Next &gt;</button>
+            <button id="showAllBtn" class="present-button" type="button" aria-label="Show All">Show All &gt;&gt;|</button>
+            <button id="returnBtn" class="present-button" type="button" aria-label="Return to Setup">Return to Setup</button>
+            <div style="margin-left:auto; display:flex; gap:12px; align-items:center;">
+                <button id="penBtn" class="present-button" type="button" aria-label="Pen">Pen</button>
+                <button id="eraserBtn" class="present-button" type="button" aria-label="Eraser">Eraser</button>
+                <button id="clearBtn" class="present-button" type="button" aria-label="Clear">Clear</button>
+                <select id="penColor" style="padding:8px; border:1px solid #ccc; border-radius:4px;">
+                    <option value="#ff0000">Red</option>
+                    <option value="#000000">Black</option>
+                    <option value="#0000ff">Blue</option>
+                    <option value="#00a000">Green</option>
+                    <option value="#800080">Purple</option>
+                    <option value="#ff8000">Orange</option>
+                </select>
+            </div>
+        </div>
+        <div id="choralTablePresent"></div>
+
+    </div>
+
+</body>
+</html>
